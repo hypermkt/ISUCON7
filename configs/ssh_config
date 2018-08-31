@@ -1,0 +1,14 @@
+Host rev
+  User isucon
+  HostName 59.106.215.170
+  IdentityFile <your key>
+
+Host app
+  User isucon
+  HostName  59.106.221.111
+  IdentityFile <your key>
+
+Host db
+  User isucon
+  HostName  59.106.212.109
+  IdentityFile <your key>

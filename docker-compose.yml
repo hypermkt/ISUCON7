@@ -1,0 +1,38 @@
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.nginx
+    volumes:
+      - ./webapp/public:/var/www/html
+    ports:
+      - "8080:80"
+    links:
+      - php
+    depends_on:
+      - php
+  php:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.php
+    environment:
+      ISUBATA_DB_HOST: database
+    volumes:
+      - ./webapp/php:/var/www/html
+      - ./tmp/xdebug:/tmp/xdebug
+    links:
+     - database
+     - redis
+  database:
+    image: mysql:5.5
+    volumes:
+      - ./initdb.d/:/docker-entrypoint-initdb.d/:ro
+    environment:
+      TZ: Asia/Tokyo
+      MYSQL_DATABASE: isubata
+      MYSQL_USER: root
+      MYSQL_PASSWORD:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+  redis:
+    image: redis:3.2.11
